@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portfolio of Alexander Pepanian - Aspiring Full-Stack Developer">
+    <title>Alexander Pepanian | Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@500;700&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <a href="#home" class="logo">AlexPepanian.dev</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button id="theme-toggle" aria-label="Toggle Dark/Light Mode">
+                <i class="fas fa-sun"></i>
+            </button>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <span class="greeting">Hello, I'm</span>
+                <h1 class="name">Alexander Pepanian</h1>
+                <h2 class="title">Aspiring Full-Stack Developer</h2>
+                <p class="tagline">Building scalable backend systems and crafting digital experiences with Java & Spring
+                    Boot.</p>
+                <div class="cta-group">
+                    <a href="#projects" class="btn btn-primary">View My Work</a>
+                    <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <div class="container">
+                <h2 class="section-title">About Me</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>
+                            I am a growing IT specialist transitioning from a background in economics and finance,
+                            driven by an insatiable curiosity for technology. My journey is defined by a passion for
+                            backend logic and web technologies, where I thrive on solving complex problems.
+                        </p>
+                        <p>
+                            Currently based in <strong>Tbilisi, Georgia</strong>, I am constantly seeking to expand my
+                            knowledge and dive deeper into the world of software development. My goal is to become a
+                            versatile full-stack professional, bridging the gap between robust architectural design and
+                            seamless user experiences.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="skills">
+            <div class="container">
+                <h2 class="section-title">Technical Skills</h2>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h3><i class="fas fa-code"></i> Languages & Tech</h3>
+                        <ul class="skill-list">
+                            <li>Java</li>
+                            <li>MySQL</li>
+                            <li>REST APIs</li>
+                            <li>HTML5 & CSS3</li>
+                            <li>JavaScript (Basic)</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h3><i class="fas fa-tools"></i> Tools & Environment</h3>
+                        <ul class="skill-list">
+                            <li>Git & GitHub</li>
+                            <li>Spring Boot</li>
+                            <li>Docker</li>
+                            <li>Postman</li>
+                            <li>IntelliJ IDEA</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="projects">
+            <div class="container">
+                <h2 class="section-title">Featured Projects</h2>
+                <div class="projects-grid">
+                    <!-- Project 1 -->
+                    <article class="project-card">
+                        <div class="project-content">
+                            <h3 class="project-title">Client-Service Manager</h3>
+                            <p class="project-tech">Java • Spring Boot • MySQL</p>
+                            <p class="project-description">
+                                A robust backend solution designed to streamline client interactions and service
+                                workflows. This application manages user roles, service tracking, and complex request
+                                handling.
+                            </p>
+                            <ul class="project-features">
+                                <li><i class="fas fa-check-circle"></i> Scalable architecture using Spring Boot</li>
+                                <li><i class="fas fa-check-circle"></i> Role-based client management system</li>
+                                <li><i class="fas fa-check-circle"></i> Designed for future full-stack expansion</li>
+                            </ul>
+                            <div class="project-links">
+                                <a href="https://github.com/thefatedone/client-service-manager" target="_blank"
+                                    class="link-text">View Code <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Project 2 -->
+                    <article class="project-card">
+                        <div class="project-content">
+                            <h3 class="project-title">Student Course Enrollment</h3>
+                            <p class="project-tech">Spring Boot • JPA • MySQL • Domain-Driven Design</p>
+                            <p class="project-description">
+                                A comprehensive academic management system handling the complete lifecycle of courses,
+                                students, and enrollments. Built with a focus on clean architecture and domain logic.
+                            </p>
+                            <ul class="project-features">
+                                <li><i class="fas fa-check-circle"></i> Modular architecture (Controller, Service,
+                                    Repository)</li>
+                                <li><i class="fas fa-check-circle"></i> Complex academic domain logic management</li>
+                                <li><i class="fas fa-check-circle"></i> Ready for integration with sheduling systems
+                                </li>
+                            </ul>
+                            <div class="project-links">
+                                <a href="https://github.com/thefatedone/courseenrollmentproject" target="_blank"
+                                    class="link-text">View Code <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="education" class="education">
+            <div class="container">
+                <h2 class="section-title">Education</h2>
+                <div class="edu-card">
+                    <div class="edu-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <div class="edu-info">
+                        <h3>Georgian Technical University</h3>
+                        <p class="edu-degree">Computer Science Undergraduate</p>
+                        <p class="edu-date">Sep 2024 - Present</p>
+                        <p class="edu-location">Tbilisi, Georgia</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact" class="footer">
+        <div class="container">
+            <h2 class="footer-title">Let's Connect</h2>
+            <p class="footer-text">Open for opportunities and collaborations.</p>
+            <div class="footer-cta">
+                <a href="cv.pdf" download class="btn btn-primary">
+                    <i class="fas fa-download"></i> Download CV
+                </a>
+            </div>
+            <div class="social-links">
+                <a href="mailto:alexpepo2006@gmail.com" class="social-icon email-link" title="Email">
+                    <i class="fas fa-envelope"></i>
+                    <span class="email-text">alexpepo2006@gmail.com</span>
+                </a>
+                <a href="https://github.com/thefatedone" target="_blank" class="social-icon" title="GitHub"><i
+                        class="fab fa-github"></i></a>
+                <a href="https://t.me/thefated0ne" target="_blank" class="social-icon" title="Telegram"><i
+                        class="fab fa-telegram"></i></a>
+                <a href="tel:+995579215050" class="social-icon" title="Phone"><i class="fas fa-phone"></i></a>
+            </div>
+            <p class="copyright">&copy; 2025 Alexander Pepanian. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
