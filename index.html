@@ -21,15 +21,17 @@
         <nav class="navbar">
             <a href="#home" class="logo">AlexPepanian.dev</a>
             <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
-            <button id="theme-toggle" aria-label="Toggle Dark/Light Mode">
-                <i class="fas fa-sun"></i>
-            </button>
+            <div class="nav-actions">
+                <a href="cv.pdf" download class="btn btn-primary btn-sm header-cv-btn">Download CV</a>
+                <button id="theme-toggle" aria-label="Toggle Dark/Light Mode">
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
             <div class="hamburger">
                 <span class="bar"></span>
                 <span class="bar"></span>
@@ -98,6 +100,14 @@
                             <li>IntelliJ IDEA</li>
                         </ul>
                     </div>
+                    <div class="skill-category">
+                        <h3><i class="fas fa-robot"></i> AI Development Tools</h3>
+                        <ul class="skill-list">
+                            <li>Claude Code</li>
+                            <li>Antigravity (Google)</li>
+                            <li>Void &amp; Cursor</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </section>
@@ -150,6 +160,33 @@
                             </div>
                         </div>
                     </article>
+
+                    <!-- Project 3 -->
+                    <article class="project-card project-card--featured">
+                        <div class="project-content">
+                            <div class="project-title-row">
+                                <h3 class="project-title">Task Manager – Workflow Engine</h3>
+                                <span class="badge-wip">⚙ In Development</span>
+                            </div>
+                            <p class="project-tech">Java 21 • Spring Boot • PostgreSQL • GraalVM (JS) • OpenFeign</p>
+                            <p class="project-description">
+                                A programmable workflow automation engine that executes complex business logic defined
+                                as structured JSON workflows. Supports dynamic HTTP calls, cron scheduling, webhook
+                                triggers, and JavaScript transformations via GraalVM Polyglot — making it fully
+                                scriptable without recompilation.
+                            </p>
+                            <ul class="project-features">
+                                <li><i class="fas fa-check-circle"></i> Dynamic JSON workflow definitions stored with JSONB (PostgreSQL)</li>
+                                <li><i class="fas fa-check-circle"></i> Scriptable step logic using embedded JavaScript via GraalVM Polyglot</li>
+                                <li><i class="fas fa-check-circle"></i> Immutable versioning system with draft/publish lifecycle</li>
+                                <li><i class="fas fa-check-circle"></i> Built-in retry policies, cron scheduling, and webhook triggers</li>
+                            </ul>
+                            <div class="project-links">
+                                <a href="https://github.com/thefatedone/task-manager" target="_blank"
+                                    class="link-text">View Code <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </article>
                 </div>
             </div>
         </section>
@@ -174,11 +211,6 @@
         <div class="container">
             <h2 class="footer-title">Let's Connect</h2>
             <p class="footer-text">Open for opportunities and collaborations.</p>
-            <div class="footer-cta">
-                <a href="cv.pdf" download class="btn btn-primary">
-                    <i class="fas fa-download"></i> Download CV
-                </a>
-            </div>
             <div class="social-links">
                 <a href="mailto:alexpepo2006@gmail.com" class="social-icon email-link" title="Email">
                     <i class="fas fa-envelope"></i>
@@ -190,7 +222,7 @@
                         class="fab fa-telegram"></i></a>
                 <a href="tel:+995579215050" class="social-icon" title="Phone"><i class="fas fa-phone"></i></a>
             </div>
-            <p class="copyright">&copy; 2025 Alexander Pepanian. All rights reserved.</p>
+            <p class="copyright">&copy; 2026 Alexander Pepanian. All rights reserved.</p>
         </div>
     </footer>
 
