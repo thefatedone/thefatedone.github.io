@@ -20,7 +20,7 @@
 <body>
     <header class="header">
         <nav class="navbar">
-            <a href="#home" class="logo">AlexPepanian<span>.dev</span></a>
+            <a href="#home" class="logo">Portfolio<span>.dev</span></a>
             <ul class="nav-links">
                 <li><a href="#about">About</a></li>
                 <li><a href="#skills">Skills</a></li>
@@ -29,9 +29,20 @@
                 <li><a href="#contact">Contact</a></li>
             </ul>
             <div class="nav-actions">
-                <a href="downloads/Alexander_Pepanian_Resume.pdf" download class="btn btn-primary btn-sm header-cv-btn">
-                    <i class="fas fa-download"></i> Resume
-                </a>
+                <div class="resume-btn-group" role="group" aria-label="Resume downloads">
+                    <a href="downloads/Alexander_Pepanian_Resume.pdf" download
+                        class="resume-nav-btn resume-nav-btn--pdf"
+                        title="Download Resume (PDF)" aria-label="Download Resume as PDF">
+                        <i class="fas fa-file-pdf" aria-hidden="true"></i>
+                        <span class="resume-nav-btn__label">PDF</span>
+                    </a>
+                    <a href="downloads/Alexander_Pepanian_Resume.docx" download
+                        class="resume-nav-btn resume-nav-btn--docx"
+                        title="Download Resume (Word)" aria-label="Download Resume as Word">
+                        <i class="fas fa-file-word" aria-hidden="true"></i>
+                        <span class="resume-nav-btn__label">DOCX</span>
+                    </a>
+                </div>
                 <button id="theme-toggle" aria-label="Toggle Dark/Light Mode">
                     <i class="fas fa-sun"></i>
                 </button>
@@ -63,31 +74,6 @@
                         <i class="fas fa-paper-plane"></i> Get In Touch
                     </a>
                 </div>
-
-                <!-- Hero Resume Download Widget -->
-                <aside class="resume-card" aria-label="Resume download">
-                    <div class="resume-card__head">
-                        <span class="resume-card__icon"><i class="fas fa-file-arrow-down"></i></span>
-                        <div class="resume-card__title">
-                            <p class="resume-card__eyebrow">For Recruiters</p>
-                            <h3 class="resume-card__heading">Download my resume</h3>
-                        </div>
-                    </div>
-                    <div class="resume-card__buttons">
-                        <a href="downloads/Alexander_Pepanian_Resume.pdf" download
-                            class="resume-btn resume-btn--pdf">
-                            <i class="fas fa-file-pdf" aria-hidden="true"></i>
-                            <span class="resume-btn__label">PDF</span>
-                            <span class="resume-btn__sub">.pdf</span>
-                        </a>
-                        <a href="downloads/Alexander_Pepanian_Resume.docx" download
-                            class="resume-btn resume-btn--docx">
-                            <i class="fas fa-file-word" aria-hidden="true"></i>
-                            <span class="resume-btn__label">Word</span>
-                            <span class="resume-btn__sub">.docx</span>
-                        </a>
-                    </div>
-                </aside>
             </div>
         </section>
 
@@ -210,7 +196,8 @@
                             <p class="project-tech">Java 21 • Spring Boot 3.4.3 • PostgreSQL (JSONB) • GraalVM Polyglot
                                 • Flyway • OpenFeign</p>
                             <p class="project-description">
-                                A programmable workflow automation engine that executes complex business logic defined as
+                                A programmable workflow automation engine that executes complex business logic defined
+                                as
                                 structured JSON workflows. Built on a custom execution engine supporting
                                 <strong>HTTP_CALL</strong>, <strong>LOG</strong>, <strong>EMAIL</strong>, and
                                 <strong>TRANSFORM</strong> tasks, with embedded JavaScript execution via
@@ -262,8 +249,8 @@
             <p class="footer-text">Open for opportunities, internships, and collaborations.</p>
 
             <div class="social-links" role="list">
-                <a href="mailto:alexpepo2006@gmail.com" class="social-icon email-link" title="Email — alexpepo2006@gmail.com"
-                    rel="noopener" role="listitem">
+                <a href="mailto:alexpepo2006@gmail.com" class="social-icon email-link"
+                    title="Email — alexpepo2006@gmail.com" rel="noopener" role="listitem">
                     <span class="social-icon__box" aria-hidden="true">
                         <i class="fas fa-envelope"></i>
                     </span>

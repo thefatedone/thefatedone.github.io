@@ -75,7 +75,7 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-document.querySelectorAll('section, .project-card, .skill-category, .edu-card, .resume-card').forEach((el) => {
+document.querySelectorAll('section, .project-card, .skill-category, .edu-card').forEach((el) => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(20px)';
     observer.observe(el);
@@ -107,11 +107,11 @@ themeToggle.addEventListener('click', () => {
 });
 
 /* ============================
-   Resume download — analytics-friendly ping (optional)
+   Navbar resume buttons — subtle press feedback
    ============================ */
-document.querySelectorAll('.resume-btn').forEach((btn) => {
+document.querySelectorAll('.resume-nav-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
-        btn.style.transform = 'scale(0.97)';
+        btn.style.transform = 'scale(0.95)';
         setTimeout(() => {
             btn.style.transform = '';
         }, 150);
