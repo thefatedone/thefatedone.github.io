@@ -4,35 +4,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Portfolio of Alexander Pepanian - Aspiring Full-Stack Developer">
+    <meta name="description"
+        content="Portfolio of Alexander Pepanian — CS Student & Aspiring Full-Stack Developer building scalable backend systems with Java & Spring Boot.">
     <title>Alexander Pepanian | Portfolio</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@500;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@500;600;700&display=swap"
         rel="stylesheet">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
     <header class="header">
         <nav class="navbar">
-            <a href="#home" class="logo">AlexPepanian.dev</a>
+            <a href="#home" class="logo">AlexPepanian<span>.dev</span></a>
             <ul class="nav-links">
                 <li><a href="#about">About</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#projects">Projects</a></li>
+                <li><a href="#education">Education</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
             <div class="nav-actions">
-                <a href="cv.pdf" download class="btn btn-primary btn-sm header-cv-btn">Download CV</a>
+                <a href="downloads/Alexander_Pepanian_Resume.pdf" download class="btn btn-primary btn-sm header-cv-btn">
+                    <i class="fas fa-download"></i> Resume
+                </a>
                 <button id="theme-toggle" aria-label="Toggle Dark/Light Mode">
                     <i class="fas fa-sun"></i>
                 </button>
             </div>
-            <div class="hamburger">
+            <div class="hamburger" aria-label="Open menu">
                 <span class="bar"></span>
                 <span class="bar"></span>
                 <span class="bar"></span>
@@ -45,13 +49,45 @@
             <div class="hero-content">
                 <span class="greeting">Hello, I'm</span>
                 <h1 class="name">Alexander Pepanian</h1>
-                <h2 class="title">Aspiring Full-Stack Developer</h2>
-                <p class="tagline">Building scalable backend systems and crafting digital experiences with Java & Spring
-                    Boot.</p>
+                <h2 class="title">CS Student &amp; Aspiring Full-Stack Developer</h2>
+                <p class="tagline">
+                    Building scalable backend systems and crafting digital experiences with
+                    <strong>Java</strong>, <strong>Spring Boot</strong>, and modern web technologies.
+                </p>
+
                 <div class="cta-group">
-                    <a href="#projects" class="btn btn-primary">View My Work</a>
-                    <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+                    <a href="#projects" class="btn btn-primary">
+                        <i class="fas fa-code"></i> View My Work
+                    </a>
+                    <a href="#contact" class="btn btn-secondary">
+                        <i class="fas fa-paper-plane"></i> Get In Touch
+                    </a>
                 </div>
+
+                <!-- Hero Resume Download Widget -->
+                <aside class="resume-card" aria-label="Resume download">
+                    <div class="resume-card__head">
+                        <span class="resume-card__icon"><i class="fas fa-file-arrow-down"></i></span>
+                        <div class="resume-card__title">
+                            <p class="resume-card__eyebrow">For Recruiters</p>
+                            <h3 class="resume-card__heading">Download my resume</h3>
+                        </div>
+                    </div>
+                    <div class="resume-card__buttons">
+                        <a href="downloads/Alexander_Pepanian_Resume.pdf" download
+                            class="resume-btn resume-btn--pdf">
+                            <i class="fas fa-file-pdf" aria-hidden="true"></i>
+                            <span class="resume-btn__label">PDF</span>
+                            <span class="resume-btn__sub">.pdf</span>
+                        </a>
+                        <a href="downloads/Alexander_Pepanian_Resume.docx" download
+                            class="resume-btn resume-btn--docx">
+                            <i class="fas fa-file-word" aria-hidden="true"></i>
+                            <span class="resume-btn__label">Word</span>
+                            <span class="resume-btn__sub">.docx</span>
+                        </a>
+                    </div>
+                </aside>
             </div>
         </section>
 
@@ -81,19 +117,19 @@
                 <h2 class="section-title">Technical Skills</h2>
                 <div class="skills-grid">
                     <div class="skill-category">
-                        <h3><i class="fas fa-code"></i> Languages & Tech</h3>
+                        <h3><i class="fas fa-code"></i> Languages &amp; Tech</h3>
                         <ul class="skill-list">
                             <li>Java</li>
                             <li>MySQL</li>
                             <li>REST APIs</li>
-                            <li>HTML5 & CSS3</li>
+                            <li>HTML5 &amp; CSS3</li>
                             <li>JavaScript (Basic)</li>
                         </ul>
                     </div>
                     <div class="skill-category">
-                        <h3><i class="fas fa-tools"></i> Tools & Environment</h3>
+                        <h3><i class="fas fa-tools"></i> Tools &amp; Environment</h3>
                         <ul class="skill-list">
-                            <li>Git & GitHub</li>
+                            <li>Git &amp; GitHub</li>
                             <li>Spring Boot</li>
                             <li>Docker</li>
                             <li>Postman</li>
@@ -134,7 +170,7 @@
                             </ul>
                             <div class="project-links">
                                 <a href="https://github.com/thefatedone/client-service-manager" target="_blank"
-                                    class="link-text">View Code <i class="fas fa-arrow-right"></i></a>
+                                    rel="noopener" class="link-text">View Code <i class="fas fa-arrow-right"></i></a>
                             </div>
                         </div>
                     </article>
@@ -152,38 +188,50 @@
                                 <li><i class="fas fa-check-circle"></i> Modular architecture (Controller, Service,
                                     Repository)</li>
                                 <li><i class="fas fa-check-circle"></i> Complex academic domain logic management</li>
-                                <li><i class="fas fa-check-circle"></i> Ready for integration with sheduling systems
+                                <li><i class="fas fa-check-circle"></i> Ready for integration with scheduling systems
                                 </li>
                             </ul>
                             <div class="project-links">
                                 <a href="https://github.com/thefatedone/courseenrollmentproject" target="_blank"
-                                    class="link-text">View Code <i class="fas fa-arrow-right"></i></a>
+                                    rel="noopener" class="link-text">View Code <i class="fas fa-arrow-right"></i></a>
                             </div>
                         </div>
                     </article>
 
-                    <!-- Project 3 -->
+                    <!-- Project 3 — Task Manager / Workflow Engine (Completed) -->
                     <article class="project-card project-card--featured">
                         <div class="project-content">
                             <div class="project-title-row">
-                                <h3 class="project-title">Task Manager – Workflow Engine</h3>
-                                <span class="badge-wip">⚙ In Development</span>
+                                <h3 class="project-title">Task Manager — Workflow Engine</h3>
+                                <span class="badge-completed" title="Production-ready project">
+                                    <i class="fas fa-circle-check"></i> Production Ready
+                                </span>
                             </div>
-                            <p class="project-tech">Java 21 • Spring Boot • PostgreSQL • GraalVM (JS) • OpenFeign</p>
+                            <p class="project-tech">Java 21 • Spring Boot 3.4.3 • PostgreSQL (JSONB) • GraalVM Polyglot
+                                • Flyway • OpenFeign</p>
                             <p class="project-description">
-                                A programmable workflow automation engine that executes complex business logic defined
-                                as structured JSON workflows. Supports dynamic HTTP calls, cron scheduling, webhook
-                                triggers, and JavaScript transformations via GraalVM Polyglot — making it fully
-                                scriptable without recompilation.
+                                A programmable workflow automation engine that executes complex business logic defined as
+                                structured JSON workflows. Built on a custom execution engine supporting
+                                <strong>HTTP_CALL</strong>, <strong>LOG</strong>, <strong>EMAIL</strong>, and
+                                <strong>TRANSFORM</strong> tasks, with embedded JavaScript execution via
+                                <strong>GraalVM Polyglot</strong> for dynamic, scriptable data transformation — fully
+                                extensible without recompilation.
                             </p>
                             <ul class="project-features">
-                                <li><i class="fas fa-check-circle"></i> Dynamic JSON workflow definitions stored with JSONB (PostgreSQL)</li>
-                                <li><i class="fas fa-check-circle"></i> Scriptable step logic using embedded JavaScript via GraalVM Polyglot</li>
-                                <li><i class="fas fa-check-circle"></i> Immutable versioning system with draft/publish lifecycle</li>
-                                <li><i class="fas fa-check-circle"></i> Built-in retry policies, cron scheduling, and webhook triggers</li>
+                                <li><i class="fas fa-check-circle"></i> <strong>Java 21</strong> + <strong>Spring Boot
+                                        3.4.3</strong> with custom execution engine (HTTP_CALL, LOG, EMAIL, TRANSFORM)
+                                </li>
+                                <li><i class="fas fa-check-circle"></i> Embedded <strong>JavaScript</strong> execution
+                                    via GraalVM Polyglot for dynamic data transformation</li>
+                                <li><i class="fas fa-check-circle"></i> <strong>PostgreSQL JSONB</strong> with Flyway
+                                    migrations for flexible, versioned workflow definitions</li>
+                                <li><i class="fas fa-check-circle"></i> Immutable <strong>versioning</strong>
+                                    (draft/publish), cron scheduling, webhook triggers, and configurable
+                                    retry/failure policies
+                                </li>
                             </ul>
                             <div class="project-links">
-                                <a href="https://github.com/thefatedone/task-manager" target="_blank"
+                                <a href="https://github.com/thefatedone/task-manager" target="_blank" rel="noopener"
                                     class="link-text">View Code <i class="fas fa-arrow-right"></i></a>
                             </div>
                         </div>
@@ -200,7 +248,7 @@
                     <div class="edu-info">
                         <h3>Georgian Technical University</h3>
                         <p class="edu-degree">Computer Science Undergraduate</p>
-                        <p class="edu-date">Sep 2024 - Present</p>
+                        <p class="edu-date">Sep 2024 — Present</p>
                         <p class="edu-location">Tbilisi, Georgia</p>
                     </div>
                 </div>
@@ -211,19 +259,37 @@
     <footer id="contact" class="footer">
         <div class="container">
             <h2 class="footer-title">Let's Connect</h2>
-            <p class="footer-text">Open for opportunities and collaborations.</p>
-            <div class="social-links">
-                <a href="mailto:alexpepo2006@gmail.com" class="social-icon email-link" title="Email">
-                    <i class="fas fa-envelope"></i>
+            <p class="footer-text">Open for opportunities, internships, and collaborations.</p>
+
+            <div class="social-links" role="list">
+                <a href="mailto:alexpepo2006@gmail.com" class="social-icon email-link" title="Email — alexpepo2006@gmail.com"
+                    rel="noopener" role="listitem">
+                    <span class="social-icon__box" aria-hidden="true">
+                        <i class="fas fa-envelope"></i>
+                    </span>
                     <span class="email-text">alexpepo2006@gmail.com</span>
                 </a>
-                <a href="https://github.com/thefatedone" target="_blank" class="social-icon" title="GitHub"><i
-                        class="fab fa-github"></i></a>
-                <a href="https://t.me/thefated0ne" target="_blank" class="social-icon" title="Telegram"><i
-                        class="fab fa-telegram"></i></a>
-                <a href="tel:+995579215050" class="social-icon" title="Phone"><i class="fas fa-phone"></i></a>
+                <a href="https://github.com/thefatedone" target="_blank" rel="noopener" class="social-icon"
+                    title="GitHub — thefatedone" role="listitem" aria-label="GitHub">
+                    <span class="social-icon__box" aria-hidden="true">
+                        <i class="fab fa-github"></i>
+                    </span>
+                </a>
+                <a href="https://t.me/thefated0ne" target="_blank" rel="noopener" class="social-icon"
+                    title="Telegram — @thefated0ne" role="listitem" aria-label="Telegram">
+                    <span class="social-icon__box" aria-hidden="true">
+                        <i class="fab fa-telegram"></i>
+                    </span>
+                </a>
+                <a href="https://www.linkedin.com/in/alexanderpepanian/" target="_blank" rel="noopener"
+                    class="social-icon" title="LinkedIn — Alexander Pepanian" role="listitem" aria-label="LinkedIn">
+                    <span class="social-icon__box" aria-hidden="true">
+                        <i class="fab fa-linkedin-in"></i>
+                    </span>
+                </a>
             </div>
-            <p class="copyright">&copy; 2026 Alexander Pepanian. All rights reserved.</p>
+
+            <p class="copyright">&copy; 2026 Alexander Pepanian. Built with care &amp; deployed on GitHub Pages.</p>
         </div>
     </footer>
 
