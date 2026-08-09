@@ -15,6 +15,7 @@
         rel="stylesheet">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/smooth-scrollbar/8.8.4/smooth-scrollbar.js"></script>
 </head>
 
 <body>
@@ -81,6 +82,13 @@
             <div class="container">
                 <h2 class="section-title">About Me</h2>
                 <div class="about-content">
+                    <figure class="profile-photo" aria-label="Profile photo of Alexander Pepanian">
+                        <img src="assets/images/profile.png"
+                             alt="Alexander Pepanian — CS Student &amp; Aspiring Full-Stack Developer"
+                             loading="lazy"
+                             width="220"
+                             height="220">
+                    </figure>
                     <div class="about-text">
                         <p>
                             I am a growing IT specialist transitioning from a background in economics and finance,
@@ -279,6 +287,14 @@
             <p class="copyright">&copy; 2026 Alexander Pepanian. Built with care &amp; deployed on GitHub Pages.</p>
         </div>
     </footer>
+
+    <button id="scroll-to-top"
+            class="scroll-to-top"
+            type="button"
+            aria-label="Scroll to top of page"
+            title="Back to top">
+        <i class="fas fa-arrow-up" aria-hidden="true"></i>
+    </button>
 
     <script src="script.js"></script>
 </body>
