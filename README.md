@@ -99,34 +99,6 @@ thefatedone.github.io/
 
 <br>
 
-## 🏃‍♂️ Run Locally
-
-No build step required — just serve the folder with any static file server.
-
-```bash
-# Option 1 — Python
-python -m http.server 8000
-
-# Option 2 — Node.js
-npx serve .
-
-# Option 3 — PHP
-php -S localhost:8000
-```
-
-Then open 👉 **http://localhost:8000**
-
-<br>
-
-## 🌐 Deploy to GitHub Pages
-
-1. Push to the `main` branch
-2. Go to **Settings → Pages**
-3. Set source to **`Deploy from a branch` → `main` / `(root)`**
-4. Save — your site is live at `https://<username>.github.io/`
-
-<br>
-
 ## 📬 Contact
 
 <div align="center">
