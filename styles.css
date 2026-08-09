@@ -63,10 +63,11 @@ body.light-mode {
 }
 
 html {
-    /* scroll-behavior intentionally NOT set — it interferes with our
-       custom requestAnimationFrame scroll-to-top animation by
-       intercepting window.scrollTo() frames and snapping to the
-       destination, producing jerky / glitchy motion. */
+    /* smooth-scrollbar takes over native scrolling, so html must be
+       a fixed-height container with overflow hidden. The library
+       creates its own internal scroll tracker inside <body>. */
+    overflow: hidden;
+    height: 100%;
 }
 
 body {
@@ -76,10 +77,56 @@ body {
     line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* overflow-x intentionally NOT set on body — when body clips
-       horizontally, some browsers move the scroll container off the
-       documentElement, breaking window.pageYOffset / documentElement
-       .scrollTop for custom rAF scroll animations. */
+    /* Required by smooth-scrollbar: body is the scroll container,
+       so it must be fixed-height and clip overflow. The library
+       renders its own scrollbar inside body and translates content
+       with CSS transforms to simulate scrolling. */
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+}
+
+/* The scroll-content wrapper that the library moves via transform.
+   It receives the full natural height of the page. */
+.scroll-content {
+    will-change: transform;
+    min-height: 100vh;
+}
+
+/* ============================
+   smooth-scrollbar styling
+   Library inserts .scrollbar-track / .scrollbar-thumb at the
+   end of <body>. Style them to match the dark / light themes.
+   ============================ */
+.scrollbar-track {
+    background-color: transparent !important;
+    z-index: 100;
+}
+
+.scrollbar-track.scrollbar-track-y {
+    width: 8px;
+    top: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.scrollbar-thumb {
+    background-color: var(--secondary-color) !important;
+    opacity: 0.35;
+    border-radius: 4px;
+    transition: opacity 0.25s ease;
+}
+
+.scrollbar-thumb:hover {
+    opacity: 0.7;
+}
+
+/* Hide the custom scrollbar on small touch devices where it
+   adds clutter without value (touch is the primary input). */
+@media (max-width: 768px) {
+    .scrollbar-track {
+        display: none !important;
+    }
 }
 
 /* ============================

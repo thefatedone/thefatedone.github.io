@@ -8,5 +8,8 @@
   },
   "devDependencies": {
     "sharp": "^0.33.5"
+  },
+  "dependencies": {
+    "smooth-scrollbar": "^8.8.4"
   }
 }

@@ -32,6 +32,10 @@ document.addEventListener('click', (e) => {
 
 /* ============================
    Smooth Scroll for anchor links
+   - Routes through smooth-scrollbar's scrollTo() when the library
+     is active so nav clicks get the same buttery momentum as the
+     scroll-to-top button.
+   - Falls back to native smooth scroll otherwise.
    ============================ */
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener('click', function (e) {
@@ -41,8 +45,22 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
         if (!target) return;
         e.preventDefault();
         const headerOffset = 70;
-        const top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
-        window.scrollTo({ top, behavior: 'smooth' });
+        const rect = target.getBoundingClientRect();
+
+        /* When smooth-scrollbar is active it owns the scroll position,
+           so we read the current top from the library instance if
+           available, otherwise from window.pageYOffset. */
+        const currentTop = window.__bodyScrollbar
+            ? window.__bodyScrollbar.scrollTop
+            : window.pageYOffset;
+
+        const top = rect.top + currentTop - headerOffset;
+
+        if (window.__bodyScrollbar && typeof window.__bodyScrollbar.scrollTo === 'function') {
+            window.__bodyScrollbar.scrollTo(0, top, 800);
+        } else {
+            window.scrollTo({ top, behavior: 'smooth' });
+        }
     });
 });
 
@@ -119,122 +137,77 @@ document.querySelectorAll('.resume-nav-btn').forEach((btn) => {
 });
 
 /* ============================
-   Scroll-to-Top Button
-   - Smooth fade-in once the user scrolls past 300px.
-   - Custom requestAnimationFrame loop with easeInOutCubic produces
-     a slow, silky-smooth glide from bottom to top.
-   - CSS scroll-behavior is intentionally NOT used — it intercepts
-     rAF-driven window.scrollTo() frames and produces jerky motion.
-   - The animation is cancelled the moment the user manually scrolls
-     or touches the screen, so the page never fights them.
+   Scroll-to-Top Button (smooth-scrollbar powered)
+   - smooth-scrollbar library (loaded from /vendor/smooth-scrollbar.js)
+     takes over native scrolling on <body>. The library handles all
+     mouse wheel, trackpad, touch, and keyboard scrolling natively
+     with built-in momentum — no custom rAF needed.
+   - The scroll-to-top button uses the library's scrollTo() with a
+     1200ms duration for a slow, silky-smooth glide to the top.
+   - Visibility is wired through the library's scroll listener so the
+     button shows/hides in sync with the actual scroll position.
+   - Anchors also use the library so nav clicks get the same smooth
+     momentum as the scroll-to-top button.
    ============================ */
-const scrollTopBtn = document.getElementById('scroll-to-top');
 const SCROLL_THRESHOLD = 300;
 
-/* Active animation handle (null when no animation is running) */
-let scrollAnimationId = null;
-
-/* Cancel any in-flight scroll-to-top animation */
-function cancelScrollToTop() {
-    if (scrollAnimationId !== null) {
-        cancelAnimationFrame(scrollAnimationId);
-        scrollAnimationId = null;
+/* Initialize smooth-scrollbar on the body element.
+   Returns the Scrollbar instance, or null if the library didn't load. */
+function initScrollbar() {
+    if (typeof window.Scrollbar !== 'function') {
+        console.warn('smooth-scrollbar not loaded — using native scroll.');
+        return null;
+    }
+    try {
+        const sb = window.Scrollbar.init(document.body, {
+            damping: 0.08,
+            thumbMinSize: 24,
+            renderByPixels: true,
+            alwaysShowTracks: false,
+            continuousScrolling: true,
+            delegateTo: null,
+        });
+        /* Expose for other handlers (anchor links, debug) */
+        window.__bodyScrollbar = sb;
+        return sb;
+    } catch (err) {
+        console.warn('smooth-scrollbar init failed:', err);
+        return null;
     }
 }
 
-/* Smooth ease-in-out cubic — slow start, gentle settle.
-   Produces a premium, unhurried feel for long scrolls. */
-const easeInOutCubic = (t) =>
-    t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const bodyScrollbar = initScrollbar();
 
-/* Animated scroll to the top of the page. */
-function scrollToTop(duration = 1200) {
-    const startPosition = window.pageYOffset || document.documentElement.scrollTop;
-    if (startPosition === 0) return;
-
-    /* Respect users who prefer reduced motion — instant jump instead */
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        window.scrollTo(0, 0);
-        return;
-    }
-
-    /* Cancel any previous in-flight animation before starting a new one */
-    cancelScrollToTop();
-
-    /* Distance-aware duration: scale gently with scroll length so a
-       very long page still feels deliberate but a short scroll is
-       never sluggish. Clamped 1100ms – 2400ms. */
-    const adjustedDuration = Math.min(
-        2400,
-        Math.max(1100, startPosition * 1.6)
-    );
-
-    let startTime = null;
-
-    function animation(currentTime) {
-        if (startTime === null) startTime = currentTime;
-        const timeElapsed = currentTime - startTime;
-        const progress = Math.min(timeElapsed / adjustedDuration, 1);
-        const easeProgress = easeInOutCubic(progress);
-
-        window.scrollTo(0, startPosition * (1 - easeProgress));
-
-        if (timeElapsed < adjustedDuration) {
-            scrollAnimationId = requestAnimationFrame(animation);
-        } else {
-            scrollAnimationId = null;
-        }
-    }
-
-    scrollAnimationId = requestAnimationFrame(animation);
-}
-
-/* Smooth visibility toggle based on scroll distance (rAF-throttled) */
-let ticking = false;
+/* === Scroll-to-Top Button === */
+const scrollTopBtn = document.getElementById('scroll-to-top');
 
 function updateScrollTopVisibility() {
-    const y = window.scrollY;
+    if (!scrollTopBtn) return;
+    const y = bodyScrollbar ? bodyScrollbar.scrollTop : window.scrollY;
     if (y > SCROLL_THRESHOLD) {
         scrollTopBtn.classList.add('is-visible');
     } else {
         scrollTopBtn.classList.remove('is-visible');
     }
-    ticking = false;
 }
 
-window.addEventListener(
-    'scroll',
-    () => {
-        /* If the user scrolls manually mid-animation, abort it so
-           the page never fights their input. */
-        cancelScrollToTop();
+/* Wire visibility through the library if available, otherwise native scroll. */
+if (bodyScrollbar) {
+    bodyScrollbar.addListener(updateScrollTopVisibility);
+} else {
+    window.addEventListener('scroll', updateScrollTopVisibility, { passive: true });
+}
 
-        if (!ticking) {
-            requestAnimationFrame(updateScrollTopVisibility);
-            ticking = true;
-        }
-    },
-    { passive: true }
-);
-
-/* Touch / wheel / keyboard input also cancels the in-flight animation */
-window.addEventListener('wheel', cancelScrollToTop, { passive: true });
-window.addEventListener('touchstart', cancelScrollToTop, { passive: true });
-window.addEventListener('keydown', (e) => {
-    const navKeys = [
-        'PageUp', 'PageDown', 'Home', 'End',
-        'ArrowUp', 'ArrowDown', 'Space',
-    ];
-    if (navKeys.includes(e.code)) cancelScrollToTop();
-});
-
-/* Initial state on load (handles refreshes while scrolled) */
 updateScrollTopVisibility();
 
-/* Click triggers the slow, silky-smooth scroll */
 if (scrollTopBtn) {
     scrollTopBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        scrollToTop(1200);
+        if (bodyScrollbar && typeof bodyScrollbar.scrollTo === 'function') {
+            bodyScrollbar.scrollTo(0, 0, 1200);
+        } else {
+            /* Native fallback if the library didn't initialize */
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
     });
 }
