@@ -120,197 +120,85 @@ document.querySelectorAll('.resume-nav-btn').forEach((btn) => {
 
 /* ============================
    Scroll-to-Top Button
-   - Smooth fade-in once the user scrolls past 300px.
-   - Universal scroll container detection: the button works whether
-     the page scrolls on `window` or on an internal overflow container
-     (e.g. <main>, <section>, .wrapper). This handles sites that use
-     a SPA-style fixed-height app shell.
-   - requestAnimationFrame loop with easeInOutCubic produces a slow,
-     silky-smooth glide from bottom to top.
-   - The animation is cancelled the moment the user manually scrolls
-     or touches the screen, so the page never fights them.
-   - CSS scroll-behavior is intentionally NOT set — it intercepts
-     rAF-driven window.scrollTo() frames and produces jerky motion.
+   - Wrapped in DOMContentLoaded so the script is safe regardless of
+     where the <script> tag sits in index.html.
+   - Standard native page scrolling is preserved (no overflow:hidden,
+     no smooth-scrollbar takeover, no touch-action: none).
+   - The click handler updates BOTH window.scrollTo AND the active
+     target container's scrollTop on every frame — belt-and-braces
+     so it works across browsers that move the scroll container.
+   - 1200ms duration with easeInOutCubic for a slow, silky-smooth
+     glide from bottom to top.
    ============================ */
-const scrollTopBtn = document.getElementById('scroll-to-top');
-const SCROLL_THRESHOLD = 300;
+document.addEventListener('DOMContentLoaded', () => {
+    const scrollTopBtn = document.getElementById('scroll-to-top');
+    if (!scrollTopBtn) return;
 
-/* Active animation handle (null when no animation is running) */
-let scrollAnimationId = null;
+    const SCROLL_THRESHOLD = 300;
 
-/* Cached scroll container — detected once on load, re-detected
-   on demand if the page layout changes (e.g. resize/orientation). */
-let cachedScrollContainer = null;
-
-/* Cancel any in-flight scroll-to-top animation */
-function cancelScrollToTop() {
-    if (scrollAnimationId !== null) {
-        cancelAnimationFrame(scrollAnimationId);
-        scrollAnimationId = null;
-    }
-}
-
-/* Smooth ease-in-out cubic — slow start, gentle settle. */
-const easeInOutCubic = (t) =>
-    t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-
-/* Read current scroll offset from a container (window or element) */
-function getScrollTop(container) {
-    if (container === window) {
-        return (
-            window.pageYOffset ||
-            document.documentElement.scrollTop ||
-            document.body.scrollTop ||
-            0
-        );
-    }
-    return container.scrollTop || 0;
-}
-
-/* Write scroll offset to a container */
-function setScrollTop(container, value) {
-    if (container === window) {
-        window.scrollTo(0, value);
-        /* Belt-and-braces: also assign directly in case some browsers
-           require it for rAF-driven frames. */
-        document.documentElement.scrollTop = value;
-        document.body.scrollTop = value;
-    } else {
-        container.scrollTop = value;
-    }
-}
-
-/* Detect which element is actually scrolling on the page.
-   Returns either `window` or the internal overflow container. */
-function getScrollContainer() {
-    /* Fast path: if any of the standard viewport-level readouts is
-       non-zero, the document itself is scrolling. */
-    if (
-        (window.pageYOffset || 0) > 0 ||
-        (document.documentElement.scrollTop || 0) > 0 ||
-        (document.body.scrollTop || 0) > 0
-    ) {
-        return window;
-    }
-
-    /* Otherwise, hunt for an internal element that's actually scrolled.
-       Limit to candidates with vertical overflow capability to keep
-       this cheap. */
-    const candidates = document.querySelectorAll(
-        'main, section, .wrapper, .app, .app-shell, .scroll-container, div'
-    );
-    for (const el of candidates) {
-        const style = window.getComputedStyle(el);
-        const oy = style.overflowY;
-        const isScrollable =
-            oy === 'auto' ||
-            oy === 'scroll' ||
-            oy === 'overlay';
-
-        if (isScrollable && el.scrollHeight > el.clientHeight && el.scrollTop > 0) {
-            return el;
-        }
-    }
-
-    /* Fallback: window — most common case. */
-    return window;
-}
-
-/* Self-contained ultra-smooth scroll to top with easeInOutCubic.
-   Auto-detects the scrolling container at call time so it always
-   targets the right element even if the page layout changes. */
-function executeUltraSmoothScroll(duration = 1400) {
-    const container = getScrollContainer();
-    const start = getScrollTop(container);
-
-    if (start <= 0) return;
-
-    /* Respect users who prefer reduced motion — instant jump instead */
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        setScrollTop(container, 0);
-        return;
-    }
-
-    /* Cancel any previous in-flight animation before starting a new one */
-    cancelScrollToTop();
-
-    let startTime = null;
-
-    function step(currentTime) {
-        if (startTime === null) startTime = currentTime;
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const easedProgress = easeInOutCubic(progress);
-
-        const currentPos = start * (1 - easedProgress);
-        setScrollTop(container, currentPos);
-
-        if (progress < 1) {
-            scrollAnimationId = requestAnimationFrame(step);
+    /* Show/hide the button as the user scrolls past the threshold */
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > SCROLL_THRESHOLD) {
+            scrollTopBtn.classList.add('is-visible');
         } else {
-            scrollAnimationId = null;
+            scrollTopBtn.classList.remove('is-visible');
         }
-    }
+    });
 
-    scrollAnimationId = requestAnimationFrame(step);
-}
+    /* Smooth ease-in-out cubic — slow start, gentle settle. */
+    const easeInOutCubic = (t) =>
+        t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
-/* Smooth visibility toggle based on scroll distance (rAF-throttled).
-   Reads from whichever container is actually scrolling. */
-let ticking = false;
-
-function updateScrollTopVisibility() {
-    const y = getScrollTop(getScrollContainer());
-    if (y > SCROLL_THRESHOLD) {
-        scrollTopBtn.classList.add('is-visible');
-    } else {
-        scrollTopBtn.classList.remove('is-visible');
-    }
-    ticking = false;
-}
-
-/* Listen on window + capture phase on any container, so the visibility
-   update fires regardless of which element is doing the scrolling. */
-function handleScrollEvent() {
-    cancelScrollToTop();
-
-    if (!ticking) {
-        requestAnimationFrame(updateScrollTopVisibility);
-        ticking = true;
-    }
-}
-
-window.addEventListener('scroll', handleScrollEvent, { passive: true });
-document.addEventListener(
-    'scroll',
-    handleScrollEvent,
-    { passive: true, capture: true }
-);
-
-/* Touch / wheel / keyboard input cancels the in-flight animation
-   regardless of which container is scrolling. */
-window.addEventListener('wheel', cancelScrollToTop, { passive: true });
-window.addEventListener('touchstart', cancelScrollToTop, { passive: true });
-window.addEventListener('keydown', (e) => {
-    const navKeys = [
-        'PageUp', 'PageDown', 'Home', 'End',
-        'ArrowUp', 'ArrowDown', 'Space',
-    ];
-    if (navKeys.includes(e.code)) cancelScrollToTop();
-});
-
-/* Re-detect scroll container on resize (layout may have changed) */
-window.addEventListener('resize', () => {
-    cachedScrollContainer = null;
-});
-
-/* Initial state on load (handles refreshes while scrolled) */
-updateScrollTopVisibility();
-
-/* Click triggers the slow, silky-smooth scroll */
-if (scrollTopBtn) {
+    /* Smooth scroll to top — writes to BOTH window and the active
+       container so it works regardless of which element is scrolling. */
     scrollTopBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        executeUltraSmoothScroll(1400);
+
+        const targetContainer =
+            document.documentElement.scrollTop > 0
+                ? document.documentElement
+                : document.body;
+        const startPosition =
+            window.pageYOffset || targetContainer.scrollTop;
+
+        if (startPosition <= 0) return;
+
+        /* Respect users who prefer reduced motion */
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            window.scrollTo(0, 0);
+            targetContainer.scrollTop = 0;
+            return;
+        }
+
+        const duration = 1200; // 1.2s smooth glide
+        let startTime = null;
+
+        function step(currentTime) {
+            if (startTime === null) startTime = currentTime;
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easedProgress = easeInOutCubic(progress);
+
+            const position = startPosition * (1 - easedProgress);
+
+            /* Belt-and-braces: write to BOTH the window and the
+               detected target container on every frame. Some browsers
+               keep the scroll position on documentElement, others on
+               body — covering both guarantees smooth motion across
+               browsers and layouts. */
+            window.scrollTo(0, position);
+            targetContainer.scrollTop = position;
+
+            if (progress < 1) {
+                requestAnimationFrame(step);
+            }
+        }
+
+        requestAnimationFrame(step);
     });
-}
+
+    /* Sync initial visibility in case the page is loaded mid-scroll */
+    if (window.scrollY > SCROLL_THRESHOLD) {
+        scrollTopBtn.classList.add('is-visible');
+    }
+});
