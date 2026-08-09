@@ -63,10 +63,10 @@ body.light-mode {
 }
 
 html {
-    /* scroll-behavior intentionally NOT set — smooth-scrollbar
-       controls all scrolling; native smooth-scroll would conflict. */
-    overflow: hidden;
-    height: 100%;
+    /* scroll-behavior intentionally NOT set — it interferes with our
+       custom requestAnimationFrame scroll-to-top animation by
+       intercepting window.scrollTo() frames and snapping to the
+       destination, producing jerky / glitchy motion. */
 }
 
 body {
@@ -76,12 +76,10 @@ body {
     line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* Required by smooth-scrollbar: it takes over scrolling on the
-       body element, so the body itself must be a fixed-height
-       scroll container. The library creates its own internal scroll
-       tracker, so window.scrollTo is bypassed. */
-    overflow: hidden;
-    height: 100%;
+    /* overflow-x intentionally NOT set on body — when body clips
+       horizontally, some browsers move the scroll container off the
+       documentElement, breaking window.pageYOffset / documentElement
+       .scrollTop for custom rAF scroll animations. */
 }
 
 /* ============================
