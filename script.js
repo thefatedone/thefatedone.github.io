@@ -1,4 +1,60 @@
 /* ============================
+   smooth-scrollbar initialization
+   - Owns all scrolling on #scroll-viewport (NOT <body>).
+   - The library wraps the children of #scroll-viewport in its
+     internal .scroll-content div. The header and the scroll-to-top
+     button are siblings of #scroll-viewport and stay fixed in the
+     viewport — independent of the library's transforms.
+   - Initialized FIRST so other handlers (anchor links, header
+     shadow, scroll-to-top button) can subscribe to it.
+   ============================ */
+function initScrollbar() {
+    if (typeof window.Scrollbar !== 'function') {
+        console.warn('smooth-scrollbar not loaded — using native scroll.');
+        return null;
+    }
+    const viewport = document.getElementById('scroll-viewport');
+    if (!viewport) {
+        console.warn('scroll-viewport not found — using native scroll.');
+        return null;
+    }
+    try {
+        const sb = window.Scrollbar.init(viewport, {
+            damping: 0.08,
+            thumbMinSize: 24,
+            renderByPixels: true,
+            alwaysShowTracks: false,
+            continuousScrolling: true,
+            delegateTo: null,
+        });
+        /* Expose for other handlers (anchor links, debug) */
+        window.__bodyScrollbar = sb;
+        return sb;
+    } catch (err) {
+        console.warn('smooth-scrollbar init failed:', err);
+        return null;
+    }
+}
+
+const bodyScrollbar = initScrollbar();
+
+/* Helper to read the current scroll position, regardless of whether
+   smooth-scrollbar is active. */
+function getScrollTop() {
+    return bodyScrollbar ? bodyScrollbar.scrollTop : window.pageYOffset;
+}
+
+/* Helper to scroll to an absolute Y position, regardless of whether
+   smooth-scrollbar is active. */
+function scrollToTop(top, durationMs) {
+    if (bodyScrollbar && typeof bodyScrollbar.scrollTo === 'function') {
+        bodyScrollbar.scrollTo(0, top, durationMs);
+    } else {
+        window.scrollTo({ top, behavior: 'smooth' });
+    }
+}
+
+/* ============================
    Mobile Navigation Toggle
    ============================ */
 const hamburger = document.querySelector('.hamburger');
@@ -46,35 +102,39 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
         e.preventDefault();
         const headerOffset = 70;
         const rect = target.getBoundingClientRect();
-
-        /* When smooth-scrollbar is active it owns the scroll position,
-           so we read the current top from the library instance if
-           available, otherwise from window.pageYOffset. */
-        const currentTop = window.__bodyScrollbar
-            ? window.__bodyScrollbar.scrollTop
-            : window.pageYOffset;
-
-        const top = rect.top + currentTop - headerOffset;
-
-        if (window.__bodyScrollbar && typeof window.__bodyScrollbar.scrollTo === 'function') {
-            window.__bodyScrollbar.scrollTo(0, top, 800);
-        } else {
-            window.scrollTo({ top, behavior: 'smooth' });
-        }
+        const top = rect.top + getScrollTop() - headerOffset;
+        scrollToTop(top, 800);
     });
 });
 
 /* ============================
    Header scroll shadow refinement
+   - Native scroll event doesn't fire because smooth-scrollbar owns
+     the scroll on #scroll-viewport. Subscribe to the library's
+     scroll listener instead, with a native fallback for the rare
+     case where the library isn't available.
    ============================ */
 const header = document.querySelector('.header');
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
+function updateHeaderShadow(scrollTop) {
+    if (!header) return;
+    if (scrollTop > 50) {
         header.style.boxShadow = '0 4px 24px rgba(0, 0, 0, 0.25)';
     } else {
         header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.15)';
     }
-});
+}
+
+if (bodyScrollbar) {
+    updateHeaderShadow(bodyScrollbar.scrollTop);
+    bodyScrollbar.addListener((status) => {
+        updateHeaderShadow(status.offset.y);
+    });
+} else {
+    updateHeaderShadow(window.pageYOffset);
+    window.addEventListener('scroll', () => {
+        updateHeaderShadow(window.pageYOffset);
+    });
+}
 
 /* ============================
    Fade-in Animation on Scroll
@@ -137,77 +197,18 @@ document.querySelectorAll('.resume-nav-btn').forEach((btn) => {
 });
 
 /* ============================
-   Scroll-to-Top Button (smooth-scrollbar powered)
-   - smooth-scrollbar library (loaded from /vendor/smooth-scrollbar.js)
-     takes over native scrolling on <body>. The library handles all
-     mouse wheel, trackpad, touch, and keyboard scrolling natively
-     with built-in momentum — no custom rAF needed.
-   - The scroll-to-top button uses the library's scrollTo() with a
-     1200ms duration for a slow, silky-smooth glide to the top.
-   - Visibility is wired through the library's scroll listener so the
-     button shows/hides in sync with the actual scroll position.
-   - Anchors also use the library so nav clicks get the same smooth
-     momentum as the scroll-to-top button.
+   Scroll-to-Top Button
+   - Always visible from anywhere on the page.
+   - Sits as a sibling of #scroll-viewport so smooth-scrollbar's
+     transforms never move it.
+   - Uses the library's scrollTo() with a 1200ms duration for a
+     slow, silky-smooth glide to the top.
    ============================ */
-const SCROLL_THRESHOLD = 300;
-
-/* Initialize smooth-scrollbar on the body element.
-   Returns the Scrollbar instance, or null if the library didn't load. */
-function initScrollbar() {
-    if (typeof window.Scrollbar !== 'function') {
-        console.warn('smooth-scrollbar not loaded — using native scroll.');
-        return null;
-    }
-    try {
-        const sb = window.Scrollbar.init(document.body, {
-            damping: 0.08,
-            thumbMinSize: 24,
-            renderByPixels: true,
-            alwaysShowTracks: false,
-            continuousScrolling: true,
-            delegateTo: null,
-        });
-        /* Expose for other handlers (anchor links, debug) */
-        window.__bodyScrollbar = sb;
-        return sb;
-    } catch (err) {
-        console.warn('smooth-scrollbar init failed:', err);
-        return null;
-    }
-}
-
-const bodyScrollbar = initScrollbar();
-
-/* === Scroll-to-Top Button === */
 const scrollTopBtn = document.getElementById('scroll-to-top');
-
-function updateScrollTopVisibility() {
-    if (!scrollTopBtn) return;
-    const y = bodyScrollbar ? bodyScrollbar.scrollTop : window.scrollY;
-    if (y > SCROLL_THRESHOLD) {
-        scrollTopBtn.classList.add('is-visible');
-    } else {
-        scrollTopBtn.classList.remove('is-visible');
-    }
-}
-
-/* Wire visibility through the library if available, otherwise native scroll. */
-if (bodyScrollbar) {
-    bodyScrollbar.addListener(updateScrollTopVisibility);
-} else {
-    window.addEventListener('scroll', updateScrollTopVisibility, { passive: true });
-}
-
-updateScrollTopVisibility();
 
 if (scrollTopBtn) {
     scrollTopBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        if (bodyScrollbar && typeof bodyScrollbar.scrollTo === 'function') {
-            bodyScrollbar.scrollTo(0, 0, 1200);
-        } else {
-            /* Native fallback if the library didn't initialize */
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        scrollToTop(0, 1200);
     });
 }

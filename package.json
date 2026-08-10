@@ -4,7 +4,8 @@
   "private": true,
   "description": "Personal portfolio / CV site for Alexander Pepanian.",
   "scripts": {
-    "profile:process": "node scripts/process-profile.js"
+    "profile:process": "node scripts/process-profile.js",
+    "favicons:generate": "node scripts/generate-favicons.js"
   },
   "devDependencies": {
     "sharp": "^0.33.5"
