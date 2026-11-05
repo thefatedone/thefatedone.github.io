@@ -1,47 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="AP">
-  <defs>
-    <!-- Background gradient: dark navy, slightly lighter at bottom-right -->
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0a192f"/>
-      <stop offset="100%" stop-color="#1a2f4f"/>
-    </linearGradient>
-
-    <!-- Foreground gradient: signature mint transitioning to deeper teal -->
-    <linearGradient id="fg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#64ffda"/>
-      <stop offset="100%" stop-color="#48d1b2"/>
-    </linearGradient>
-
-    <!-- Subtle inner highlight for premium "glass" feel -->
-    <linearGradient id="highlight" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="rgba(255, 255, 255, 0.08)"/>
-      <stop offset="40%" stop-color="rgba(255, 255, 255, 0)"/>
-    </linearGradient>
-  </defs>
-
-  <!-- Rounded-square background -->
-  <rect width="64" height="64" rx="12" fill="url(#bg)"/>
-
-  <!-- Subtle inner border (mint at 18% opacity) -->
-  <rect x="0.5" y="0.5" width="63" height="63" rx="11.5"
-        fill="none" stroke="rgba(100, 255, 218, 0.18)" stroke-width="1"/>
-
-  <!-- Top highlight for premium feel -->
-  <rect width="64" height="64" rx="12" fill="url(#highlight)"/>
-
-  <!-- AP monogram: interlocking A and P sharing a vertical stroke -->
-  <g stroke="url(#fg)" stroke-width="4"
-     stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <!-- A: left leg, right leg (shared with P), crossbar -->
-    <path d="M 13 50 L 21 14 L 29 50"/>
-    <path d="M 16.5 39 L 25.5 39"/>
-    <!-- P: vertical stroke (shared with A's right leg), bowl, return to baseline -->
-    <path d="M 29 50 L 29 14 L 41 14 C 49 14 49 30 41 30 L 29 30"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>Alexander Pepanian</title>
+  <path fill="#10152b" d="M0 0h64v64H0z"/>
+  <g fill="none" stroke="#c4d0ff" stroke-width="5"
+     stroke-linecap="round" stroke-linejoin="round">
+    <path d="m12 44 9-24 9 24M16 35h10"/>
+    <path d="M38 44V20h7a7 7 0 0 1 0 14h-7"/>
   </g>
-
-  <!-- Cursor accent: short horizontal line bottom-right, suggesting a terminal cursor -->
-  <rect x="46" y="48.5" width="7" height="1.8" rx="0.9" fill="#64ffda" opacity="0.85"/>
-
-  <!-- Dot accent: top-right, balances the cursor visually -->
-  <circle cx="50" cy="14" r="1.5" fill="#64ffda" opacity="0.7"/>
 </svg>
